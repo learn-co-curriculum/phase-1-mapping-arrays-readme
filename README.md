@@ -1,127 +1,192 @@
-# JavaScript Map
+# Map
 
 ## Objectives
-
-1. Implement a `map()` function from scratch
-2. Explain how `map()` differs from `reduce()`
-3. Explain how `map()` builds on `reduce()`
+1. Implement a `map()` function from scratch.
 
 ## Introduction
-In a lot of code you'll be writing as a soon-to-be JS expert, you'll be iterating over arrays. Sometimes, you'll want to apply a transformation to the elements in the array. We can do this using `for` loops, but writing all of that stuff gets tedious after a while. Let's create our own helper method called `map()` to make things a little easier!
+In the previous lesson, we learned about `.filter()`, a built-in array method that searches through a collection, passes each element to a provided callback function, and returns an entirely new array comprised of elements for which the callback returned a truthy value.
 
-## Map to the unknown
-![Some crummy old map](https://i.ytimg.com/vi/gKVIWyj2QnU/maxresdefault.jpg)
-
-To start things off, let's write a `map()` function that abstracts away the `for` loop:
-
+Another very common built-in array method is `.map()`, which transforms every element in an array to another value. For example, it can be used to square every value in an array of numbers: `[1, 2, 3]` -> `[1, 4, 9]`. Map also accepts a callback function, and it passes each element successively to the callback:
 ```js
-function map(collection) {
-  for (let i = 0; i < collection.length; i++) {
-    const element = collection[i];
-    console.log(element);
+[1, 2, 3].map(function (num) { return num * num; });
+// => [1, 4, 9]
+```
+
+Let's quickly run through how we could create our own version of the `.map()` method.
+
+## Abstracting the iteration
+Right off the bat, we know that our function needs to accept the array from which we'd like to _map_ values as an argument:
+```js
+function map (arr) {
+  // Map magic to follow shortly
+}
+```
+
+Inside the function, we need to iterate over each element in the passed-in array, so let's fall back on our trusty `for...of` statement:
+```js
+function map (arr) {
+  for (const el of arr) {
+    // Do something to each element
   }
 }
 ```
 
-This will log all of the elements in the array. Not terribly interesting. Let's add a second argument so we can pass a function to our `map()` function. This function will receive the `element` and can then optionally transform it. We'll also need a new array to store our results in, so we can return the result when we're done:
-
+## Callback city
+We want to transform values from the array, but for code organization and re-usability it's best to keep that logic decoupled from the `map()` function. `map()` should really only be concerned with iterating over the collection and passing each element to a callback that will handle the transformations. Let's accept that callback function as the second argument to `map()`:
 ```js
-function map(collection, callback) {
-  const result = [];
-
-  for (let i = 0; i < collection.length; i++) {
-    const element = collection[i];
-    result.push(callback(element));
+function map (arr, cb) {
+  for (const el of arr) {
+    // Do something to each element
   }
-
-  return result;
 }
 ```
 
-Sweet! That should work for now. Let's take this baby for a spin by doubling a list of numbers:
-
+And inside our iteration, we'll want to invoke the callback, passing in the elements from `arr`:
 ```js
-const numbers = [1, 2, 3];
-const doubledNumbers = map(numbers, function (number) {
- return number * 2;
-});
-console.log(doubledNumbers); // prints [2, 4, 6]
-```
-
-In case we ever need the index of the item or the full list of items in our callback function, let's add these as arguments to our callback. The callback doesn't **have** to use these values, but they're there if we ever need them.
-
-```js
-function map(collection, callback) {
-  const result = [];
-
-  for (let i = 0; i < collection.length; i++) {
-    const element = collection[i];
-    result.push(callback(element, i, collection));
+function map (arr, cb) {
+  for (const el of arr) {
+    cb(el);
   }
-
-  return result;
 }
 ```
 
-## Autobots, roll out!
-![That's not how this works. That's not how any of this works.](https://media.giphy.com/media/RjBKvVNcf4xH2/giphy.gif)
+Let's make sure this is working so far:
+```js
+map([1, 2, 3], function (num) { console.log(num * num); });
+// LOG: 1
+// LOG: 4
+// LOG: 9
+```
 
-Let's use our `map()` function on a trickier data structure — a list of Autobots. To start things off, we have an array of Autobots. Now, let's transform all of them to their robotic form! A transformed Autobot needs to be marked as such using the `isTransformed` boolean, as well as have its strength doubled:
+## Returning a brand new collection
+Logging each squared number out to the console is fun, but `map()` should really be returning an entirely new array containing all of the squared values. Show off that new collection!
+
+<picture>
+  <source srcset="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/nyfw.webp" type="image/webp">
+  <source srcset="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/nyfw.gif" type="image/gif">
+  <img src="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/nyfw.gif" alt="NY Fashion Week">
+</picture>
+
+Fierce.
+
+First, let's create that new array:
+```js
+function map (arr, cb) {
+  const newArr = [];
+
+  for (const el of arr) {
+    cb(el);
+  }
+}
+```
+
+Inside the `for...of` statement, let's `.push()` the return value of each callback invocation into `newArr`:
+```js
+function map (arr, cb) {
+  const newArr = [];
+
+  for (const el of arr) {
+    newArr.push(cb(el));
+  }
+}
+```
+
+And at the end of our `map()` function we're going to want to return the new array:
+```js
+function map (arr, cb) {
+  const newArr = [];
+
+  for (const el of arr) {
+    newArr.push(cb(el));
+  }
+
+  return newArr;
+}
+```
+
+Let's test it out!
 
 ```js
-const autobots = [
-  { name: 'Optimus Prime', strength: 5, isTransformed: false, },
-  { name: 'Ironhide', strength: 3, isTransformed: false, },
-  { name: 'Bumblebee', strength: 2.5, isTransformed: false, },
-  { name: 'Ratchet', strength: 1.5, isTransformed: false, },
+const squaredNumbers = map(originalNumbers, function (num) { return num * num; });
+
+squaredNumbers;
+// => [1, 4, 9, 16, 25]
+
+originalNumbers;
+// => [1, 2, 3, 4, 5]
+```
+
+## Flatbook's expanding engineering team
+Let's use our `map()` function on a trickier data structure — a list of recently onboarded engineers. First off, we need to flip each new engineer's account from a normal user to an admin:
+```js
+const oldAccounts = [
+  { userID: 15, title: 'Developer Apprentice', accessLevel: 'user' },
+  { userID: 63, title: 'Developer Apprentice', accessLevel: 'user' },
+  { userID: 97, title: 'Developer Apprentice', accessLevel: 'user' },
+  { userID: 12, title: 'Developer Apprentice', accessLevel: 'user' },
+  { userID: 44, title: 'Developer Apprentice', accessLevel: 'user' }
 ];
 
-const transformedAutobots = map(autobots, function (autobot) {
-  return Object.assign({}, autobot, {
-    strength: autobot.strength * 2,
-    isTransformed: true,
-  });
+const newEngineers = map(oldAccounts, function (account) {
+  return Object.assign({}, account, { accessLevel: 'admin' });
 });
 
-console.log(transformedAutobots);
-/*
- Result:
+oldAccounts;
+// => [
+//      { userID: 15, title: "Developer Apprentice", accessLevel: "user" },
+//      { userID: 63, title: "Developer Apprentice", accessLevel: "user" },
+//      { userID: 97, title: "Developer Apprentice", accessLevel: "user" },
+//      { userID: 12, title: "Developer Apprentice", accessLevel: "user" },
+//      { userID: 44, title: "Developer Apprentice", accessLevel: "user" }
+//    ]
 
- [
-   { name: 'Optimus Prime', strength: 10, isTransformed: true },
-   { name: 'Ironhide', strength: 6, isTransformed: true },
-   { name: 'Bumblebee', strength: 5, isTransformed: true },
-   { name: 'Ratchet', strength: 3, isTransformed: true }
- ]
-*/
+newEngineers;
+// => [
+//      { userID: 15, title: "Developer Apprentice", accessLevel: "admin" },
+//      { userID: 63, title: "Developer Apprentice", accessLevel: "admin" },
+//      { userID: 97, title: "Developer Apprentice", accessLevel: "admin" },
+//      { userID: 12, title: "Developer Apprentice", accessLevel: "admin" },
+//      { userID: 44, title: "Developer Apprentice", accessLevel: "admin" }
+//    ]
 ```
 
-We're using `Object.assign()` here to defensively copy the object and change its values. If we didn't, the objects in the original array would get modified too. Defensive copying is important to keep in mind — modifying values all over our code is often the biggest source of bugs.
+Notice that we're using `Object.assign()` to create a **new** object with updated values instead of mutating the original object's `accessLevel` property. Nondestructive updating is an important concept to practice — destructively modifying objects at multiple points within a code base is one of the biggest sources of bugs.
 
-## Seeing the light
-![Praise the JS gods.](https://media.giphy.com/media/kkpWcU9XgFIUE/giphy.gif)
-
-Time for a confession. We basically just implemented something that is already part of the JS standard library. Sisyphus has nothing on us! To map elements in an array, we can simply use `Array.prototype.map()`.
-
-Much like our own `map()` function, `Array.prototype.map()` is an array method that iterates over all elements, allowing you to apply a function to each element in that array, effectively transforming them into something else. The result is then returned as a *new* array, leaving the original array intact and unmodified (but remember, **not** the elements we modify, necessitating the need for defensive copying). That last part is super important, because it either saves us from having to create a new array ourselves and copy stuff in there, **or** modifying the original elements in the array — much like what we did in our own `map()` function.
-
-Just so you believe I'm not pulling your leg, let's see what it looks like:
-
+Next, we just need a simple array of the new engineers' `userID`s that we can shoot over to the system administrator:
 ```js
-const transformedAutobotsWithMap = autobots.map(function (autobot) {
-  return Object.assign({}, autobot, {
-    strength: autobot.strength * 2,
-    isTransformed: true,
-  });
-});
+const userIDs = map(newEngineers, function (eng) { return eng.userID; });
 
-console.log(transformedAutobotsWithMap);
+userIDs;
+// => [15, 63, 97, 12, 44]
 ```
 
-In this code snippet, we're using the native `.map()` function that is a property of `Array`'s prototype. It gives us the exact same result! Now that we know how map is implemented, it holds no more secrets for us! We can discard our own `map()` function and just use the `.map()` property on arrays. Sweet!
+Finally, let's use the built-in `Array.prototype.map()` method to indicate that all the new engineers have been provided a new work laptop:
+```js
+const equippedEngineers = newEngineers.map(function (eng) {
+  return Object.assign({}, eng, { equipment: 'Laptop' });
+});
+
+equippedEngineers;
+// => [
+//      { userID: 15, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" },
+//      { userID: 63, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" },
+//      { userID: 97, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" },
+//      { userID: 12, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" },
+//      { userID: 44, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" }
+//    ]
+```
+
+Now that we understand how the built-in `.map()` array method is implemented, we can stick to the native method and get rid of our copycat `map()` function.
+
+<picture>
+  <source srcset="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/office_space.webp" type="image/webp">
+  <source srcset="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/office_space.gif" type="image/gif">
+  <img src="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/office_space.gif" alt="Office Space">
+</picture>
+
+Damn, it feels good to be a gangsta!
 
 ## Resources
+- [MDN — `Array.prototype.map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
 
-- [MDN: Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
-
-<p class='util--hide'>View <a href='https://learn.co/lessons/javascript-map'>Map</a> on Learn.co and start learning to code for free.</p>
+<p class='util--hide'>View <a href='https://learn.co/lessons/js-looping-and-iteration-map-readme'>Map</a> on Learn.co and start learning to code for free.</p>
