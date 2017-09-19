@@ -17,15 +17,15 @@ Let's quickly run through how we could create our own version of the `.map()` me
 ## Abstracting the iteration
 Right off the bat, we know that our function needs to accept the array from which we'd like to _map_ values as an argument:
 ```js
-function map (arr) {
+function map (array) {
   // Map magic to follow shortly
 }
 ```
 
 Inside the function, we need to iterate over each element in the passed-in array, so let's fall back on our trusty `for...of` statement:
 ```js
-function map (arr) {
-  for (const el of arr) {
+function map (array) {
+  for (const element of array) {
     // Do something to each element
   }
 }
@@ -34,18 +34,18 @@ function map (arr) {
 ## Callback city
 We want to transform values from the array, but for code organization and re-usability it's best to keep that logic decoupled from the `map()` function. `map()` should really only be concerned with iterating over the collection and passing each element to a callback that will handle the transformations. Let's accept that callback function as the second argument to `map()`:
 ```js
-function map (arr, cb) {
-  for (const el of arr) {
+function map (array, callback) {
+  for (const element of array) {
     // Do something to each element
   }
 }
 ```
 
-And inside our iteration, we'll want to invoke the callback, passing in the elements from `arr`:
+And inside our iteration, we'll want to invoke the callback, passing in the elements from `array`:
 ```js
-function map (arr, cb) {
-  for (const el of arr) {
-    cb(el);
+function map (array, callback) {
+  for (const element of array) {
+    callback(element);
   }
 }
 ```
@@ -71,33 +71,33 @@ Fierce.
 
 First, let's create that new array:
 ```js
-function map (arr, cb) {
+function map (array, callback) {
   const newArr = [];
 
-  for (const el of arr) {
-    cb(el);
+  for (const element of array) {
+    callback(element);
   }
 }
 ```
 
 Inside the `for...of` statement, let's `.push()` the return value of each callback invocation into `newArr`:
 ```js
-function map (arr, cb) {
+function map (array, callback) {
   const newArr = [];
 
-  for (const el of arr) {
-    newArr.push(cb(el));
+  for (const element of array) {
+    newArr.push(callback(element));
   }
 }
 ```
 
 And at the end of our `map()` function we're going to want to return the new array:
 ```js
-function map (arr, cb) {
+function map (array, callback) {
   const newArr = [];
 
-  for (const el of arr) {
-    newArr.push(cb(el));
+  for (const element of array) {
+    newArr.push(callback(element));
   }
 
   return newArr;
@@ -107,13 +107,15 @@ function map (arr, cb) {
 Let's test it out!
 
 ```js
-const squaredNumbers = map(originalNumbers, function (num) { return num * num; });
+const originalNumbers = [1, 2, 3, 4, 5];
 
-squaredNumbers;
-// => [1, 4, 9, 16, 25]
+const squaredNumbers = map(originalNumbers, function (num) { return num * num; });
 
 originalNumbers;
 // => [1, 2, 3, 4, 5]
+
+squaredNumbers;
+// => [1, 4, 9, 16, 25]
 ```
 
 ## Flatbook's expanding engineering team
