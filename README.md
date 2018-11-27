@@ -23,7 +23,7 @@ a callback function, and it passes each element successively to the callback:
 // => [1, 4, 9]
 ```
 
-Let's quickly run th¥rough how we could create our own version of the `.map()`
+Let's quickly run through how we could create our own version of the `.map()`
 method.
 
 ## Abstracting the iteration
