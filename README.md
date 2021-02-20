@@ -1,8 +1,8 @@
 # Map
 
-## Objectives
+## Learning Goals
 
-1.  Implement a `map()` function from scratch.
+- Implement a `map()` function from scratch
 
 ## Introduction
 
@@ -241,4 +241,3 @@ can stick to the native method and get rid of our copycat `map()` function.
 ## Resources
 
 - [MDN — `Array.prototype.map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
-
