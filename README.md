@@ -18,7 +18,7 @@ a callback function, and it passes each element successively to the callback:
 
 ```js
 [1, 2, 3].map(function(num) {
-	return num * num;
+  return num * num;
 });
 // => [1, 4, 9]
 ```
@@ -33,7 +33,7 @@ which we'd like to _map_ values as an argument:
 
 ```js
 function map(array) {
-	// Map magic to follow shortly
+  // Map magic to follow shortly
 }
 ```
 
@@ -42,25 +42,25 @@ array, so let's fall back on our trusty `for...of` statement:
 
 ```js
 function map(array) {
-	for (const element of array) {
-		// Do something to each element
-	}
+  for (const element of array) {
+    // Do something to each element
+  }
 }
 ```
 
 ## Callback city
 
 We want to transform values from the array, but for code organization and
-re-usability it's best to keep that logic decoupled from the `map()` function.
+reusability it's best to keep that logic decoupled from the `map()` function.
 `map()` should really only be concerned with iterating over the collection and
 passing each element to a callback that will handle the transformations. Let's
 accept that callback function as the second argument to `map()`:
 
 ```js
 function map(array, callback) {
-	for (const element of array) {
-		// Do something to each element
-	}
+  for (const element of array) {
+    // Do something to each element
+  }
 }
 ```
 
@@ -69,9 +69,9 @@ elements from `array`:
 
 ```js
 function map(array, callback) {
-	for (const element of array) {
-		callback(element);
-	}
+  for (const element of array) {
+    callback(element);
+  }
 }
 ```
 
@@ -79,7 +79,7 @@ Let's make sure this is working so far:
 
 ```js
 map([1, 2, 3], function(num) {
-	console.log(num * num);
+  console.log(num * num);
 });
 // LOG: 1
 // LOG: 4
@@ -104,11 +104,11 @@ First, let's create that new array:
 
 ```js
 function map(array, callback) {
-	const newArr = [];
+  const newArr = [];
 
-	for (const element of array) {
-		callback(element);
-	}
+  for (const element of array) {
+    callback(element);
+  }
 }
 ```
 
@@ -117,11 +117,11 @@ callback invocation into `newArr`:
 
 ```js
 function map(array, callback) {
-	const newArr = [];
+  const newArr = [];
 
-	for (const element of array) {
-		newArr.push(callback(element));
-	}
+  for (const element of array) {
+    newArr.push(callback(element));
+  }
 }
 ```
 
@@ -130,13 +130,13 @@ array:
 
 ```js
 function map(array, callback) {
-	const newArr = [];
+  const newArr = [];
 
-	for (const element of array) {
-		newArr.push(callback(element));
-	}
+  for (const element of array) {
+    newArr.push(callback(element));
+  }
 
-	return newArr;
+  return newArr;
 }
 ```
 
@@ -146,7 +146,7 @@ Let's test it out!
 const originalNumbers = [1, 2, 3, 4, 5];
 
 const squaredNumbers = map(originalNumbers, function(num) {
-	return num * num;
+  return num * num;
 });
 
 originalNumbers;
@@ -164,15 +164,15 @@ a normal user to an admin:
 
 ```js
 const oldAccounts = [
-	{ userID: 15, title: 'Developer Apprentice', accessLevel: 'user' },
-	{ userID: 63, title: 'Developer Apprentice', accessLevel: 'user' },
-	{ userID: 97, title: 'Developer Apprentice', accessLevel: 'user' },
-	{ userID: 12, title: 'Developer Apprentice', accessLevel: 'user' },
-	{ userID: 44, title: 'Developer Apprentice', accessLevel: 'user' }
+  { userID: 15, title: 'Developer Apprentice', accessLevel: 'user' },
+  { userID: 63, title: 'Developer Apprentice', accessLevel: 'user' },
+  { userID: 97, title: 'Developer Apprentice', accessLevel: 'user' },
+  { userID: 12, title: 'Developer Apprentice', accessLevel: 'user' },
+  { userID: 44, title: 'Developer Apprentice', accessLevel: 'user' }
 ];
 
 const newEngineers = map(oldAccounts, function(account) {
-	return Object.assign({}, account, { accessLevel: 'admin' });
+  return Object.assign({}, account, { accessLevel: 'admin' });
 });
 
 oldAccounts;
@@ -205,18 +205,19 @@ shoot over to the system administrator:
 
 ```js
 const userIDs = map(newEngineers, function(eng) {
-	return eng.userID;
+  return eng.userID;
 });
 
 userIDs;
 // => [15, 63, 97, 12, 44]
 ```
 
-Finally, let's use the built-in `Array.prototype.map()` method to indicate that all the new engineers have been provided a new work laptop:
+Finally, let's use the built-in `Array.prototype.map()` method to indicate that
+all the new engineers have been provided a new work laptop:
 
 ```js
 const equippedEngineers = newEngineers.map(function(eng) {
-	return Object.assign({}, eng, { equipment: 'Laptop' });
+  return Object.assign({}, eng, { equipment: 'Laptop' });
 });
 
 equippedEngineers;
