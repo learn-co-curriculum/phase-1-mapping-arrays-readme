@@ -3,6 +3,7 @@
 ## Learning Goals
 
 - Implement a `map()` function from scratch
+- Demonstrate using `map()`
 
 ## Introduction
 
@@ -13,8 +14,9 @@ callback returned a truthy value.
 
 Another very common built-in array method is `.map()`, which transforms every
 element in an array to another value. For example, it can be used to square
-every value in an array of numbers: `[1, 2, 3]` -> `[1, 4, 9]`. Map also accepts
-a callback function, and it passes each element successively to the callback:
+every value in an array of numbers: `[1, 2, 3]` -> `[1, 4, 9]`. Like
+`.filter()`, `.map()` accepts a callback function, and passes each element
+in turn to the callback:
 
 ```js
 [1, 2, 3].map(function(num) {
@@ -23,10 +25,18 @@ a callback function, and it passes each element successively to the callback:
 // => [1, 4, 9]
 ```
 
+While both `.filter()` and `.map()` return a new array, `.filter()` returns a
+subset of the original array (unless all elements meet the provided condition)
+in which the elements are unchanged. `.map()`, on the other hand, returns a new
+array that's the same length as the original array in which the elements have
+been modified.
+
 Let's quickly run through how we could create our own version of the `.map()`
 method.
 
-## Abstracting the iteration
+## Implementing `.map()` From Scratch
+
+### Abstracting the iteration
 
 Right off the bat, we know that our function needs to accept the array from
 which we'd like to _map_ values as an argument:
@@ -48,7 +58,7 @@ function map(array) {
 }
 ```
 
-## Callback city
+### Callback city
 
 We want to transform values from the array, but for code organization and
 reusability it's best to keep that logic decoupled from the `map()` function.
@@ -86,7 +96,7 @@ map([1, 2, 3], function(num) {
 // LOG: 9
 ```
 
-## Returning a brand new collection
+### Returning a brand new collection
 
 Logging each squared number out to the console is fun, but `map()` should really
 be returning an entirely new array containing all of the squared values. Show
@@ -156,7 +166,7 @@ squaredNumbers;
 // => [1, 4, 9, 16, 25]
 ```
 
-## Flatbook's expanding engineering team
+## Demonstrate Using `map()` on Flatbook's Expanding Engineering Team
 
 Let's use our `map()` function on a trickier data structure — a list of recently
 onboarded engineers. First off, we need to flip each new engineer's account from
@@ -212,8 +222,9 @@ userIDs;
 // => [15, 63, 97, 12, 44]
 ```
 
-Finally, let's use the built-in `Array.prototype.map()` method to indicate that
-all the new engineers have been provided a new work laptop:
+Finally, we'll update our engineer objects to indicate that all the new
+engineers have been provided a new work laptop. This time, though, let's use
+JavaScript's built-in `Array.prototype.map()` method:
 
 ```js
 const equippedEngineers = newEngineers.map(function(eng) {
@@ -229,6 +240,12 @@ equippedEngineers;
 //      { userID: 44, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" }
 //    ]
 ```
+
+Note how similar this method call is to the one using our version of `map()`:
+the only difference is that we call the built-in `.map()` method _on_ our array,
+rather than passing the array as an argument. There _is_ one big difference
+between the two, though: we didn't have to do all the work of building
+`Array.prototype.map()`!
 
 Now that we understand how the built-in `.map()` array method is implemented, we
 can stick to the native method and get rid of our copycat `map()` function.
