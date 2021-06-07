@@ -1,4 +1,4 @@
-# Map
+# Mapping Arrays
 
 ## Learning Goals
 
