@@ -19,7 +19,7 @@ every value in an array of numbers: `[1, 2, 3]` -> `[1, 4, 9]`. Like
 in turn to the callback:
 
 ```js
-[1, 2, 3].map(function(num) {
+[1, 2, 3].map(function (num) {
   return num * num;
 });
 // => [1, 4, 9]
@@ -88,7 +88,7 @@ function map(array, callback) {
 Let's make sure this is working so far:
 
 ```js
-map([1, 2, 3], function(num) {
+map([1, 2, 3], function (num) {
   console.log(num * num);
 });
 // LOG: 1
@@ -99,18 +99,8 @@ map([1, 2, 3], function(num) {
 ### Returning a brand new collection
 
 Logging each squared number out to the console is fun, but `map()` should really
-be returning an entirely new array containing all of the squared values. Show
-off that new collection!
-
-<picture>
-  <source srcset="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/nyfw.webp" type="image/webp">
-  <source srcset="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/nyfw.gif" type="image/gif">
-  <img src="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/nyfw.gif" alt="NY Fashion Week">
-</picture>
-
-Fierce.
-
-First, let's create that new array:
+be returning an entirely new array containing all of the squared values. First,
+let's create that new array:
 
 ```js
 function map(array, callback) {
@@ -155,7 +145,7 @@ Let's test it out!
 ```js
 const originalNumbers = [1, 2, 3, 4, 5];
 
-const squaredNumbers = map(originalNumbers, function(num) {
+const squaredNumbers = map(originalNumbers, function (num) {
   return num * num;
 });
 
@@ -174,15 +164,15 @@ a normal user to an admin:
 
 ```js
 const oldAccounts = [
-  { userID: 15, title: 'Developer Apprentice', accessLevel: 'user' },
-  { userID: 63, title: 'Developer Apprentice', accessLevel: 'user' },
-  { userID: 97, title: 'Developer Apprentice', accessLevel: 'user' },
-  { userID: 12, title: 'Developer Apprentice', accessLevel: 'user' },
-  { userID: 44, title: 'Developer Apprentice', accessLevel: 'user' }
+  { userID: 15, title: "Developer Apprentice", accessLevel: "user" },
+  { userID: 63, title: "Developer Apprentice", accessLevel: "user" },
+  { userID: 97, title: "Developer Apprentice", accessLevel: "user" },
+  { userID: 12, title: "Developer Apprentice", accessLevel: "user" },
+  { userID: 44, title: "Developer Apprentice", accessLevel: "user" },
 ];
 
-const newEngineers = map(oldAccounts, function(account) {
-  return Object.assign({}, account, { accessLevel: 'admin' });
+const newEngineers = map(oldAccounts, function (account) {
+  return Object.assign({}, account, { accessLevel: "admin" });
 });
 
 oldAccounts;
@@ -214,7 +204,7 @@ Next, we just need a simple array of the new engineers' `userID`s that we can
 shoot over to the system administrator:
 
 ```js
-const userIDs = map(newEngineers, function(eng) {
+const userIDs = map(newEngineers, function (eng) {
   return eng.userID;
 });
 
@@ -227,8 +217,8 @@ engineers have been provided a new work laptop. This time, though, let's use
 JavaScript's built-in `Array.prototype.map()` method:
 
 ```js
-const equippedEngineers = newEngineers.map(function(eng) {
-  return Object.assign({}, eng, { equipment: 'Laptop' });
+const equippedEngineers = newEngineers.map(function (eng) {
+  return Object.assign({}, eng, { equipment: "Laptop" });
 });
 
 equippedEngineers;
@@ -249,12 +239,6 @@ between the two, though: we didn't have to do all the work of building
 
 Now that we understand how the built-in `.map()` array method is implemented, we
 can stick to the native method and get rid of our copycat `map()` function.
-
-<picture>
-  <source srcset="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/office_space.webp" type="image/webp">
-  <source srcset="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/office_space.gif" type="image/gif">
-  <img src="https://curriculum-content.s3.amazonaws.com/web-development/js/looping-and-iteration/map-readme/office_space.gif" alt="Office Space">
-</picture>
 
 ## Resources
 
