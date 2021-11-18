@@ -158,9 +158,9 @@ squaredNumbers;
 
 ## Demonstrate Using `map()` on Flatbook's Expanding Engineering Team
 
-Let's use our `map()` function on a trickier data structure — a list of recently
-onboarded engineers. First off, we need to flip each new engineer's account from
-a normal user to an admin:
+Now let's try using our version of the `map()` function on a trickier data
+structure — a list of recently onboarded engineers. First off, we need to flip
+each new engineer's account from a normal user to an admin:
 
 ```js
 const oldAccounts = [
@@ -194,11 +194,12 @@ newEngineers;
 //    ]
 ```
 
-Notice that we're using `Object.assign()` to create a **new** object with
-updated values instead of mutating the original object's `accessLevel` property.
-Nondestructive updating is an important concept to practice — destructively
-modifying objects at multiple points within a code base is one of the biggest
-sources of bugs.
+As before, we are calling our version of the `map()` function and passing in the
+collection and a callback. Notice that we're using `Object.assign()` to create a
+**new** object with updated values instead of mutating the original object's
+`accessLevel` property. Nondestructive updating is an important concept to
+practice — destructively modifying objects at multiple points within a code base
+is one of the biggest sources of bugs.
 
 Next, we just need a simple array of the new engineers' `userID`s that we can
 shoot over to the system administrator:
