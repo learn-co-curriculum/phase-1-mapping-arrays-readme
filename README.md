@@ -60,11 +60,13 @@ function map(array) {
 
 ### Callback city
 
-We want to transform values from the array, but for code organization and
-reusability it's best to keep that logic decoupled from the `map()` function.
-`map()` should really only be concerned with iterating over the collection and
-passing each element to a callback that will handle the transformations. Let's
-accept that callback function as the second argument to `map()`:
+As we've discussed, `map()` is used to transform each element of an array and
+return a new array containing the transformed values. However, for code
+organization and reusability it's best to keep the logic of the transformation
+decoupled from the `map()` function itself. `map()` should really only be
+concerned with iterating over the collection and passing each element to a
+callback that will handle the transformations. Let's set up `map()` to take that
+callback function as its second argument:
 
 ```js
 function map(array, callback) {
