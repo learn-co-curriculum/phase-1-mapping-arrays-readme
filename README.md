@@ -3,20 +3,28 @@
 ## Learning Goals
 
 - Implement a `map()` function from scratch
-- Demonstrate using `map()`
+- Demonstrate using `Array.prototype.map()` instead
 
 ## Introduction
 
-In the previous lesson, we learned about `.filter()`, a built-in array method
+| Use Case                                                       | Method                |
+| -------------------------------------------------------------- | --------------------- |
+| Executing a provided callback on each element                  | `forEach()`           |
+| Finding a single element that meets a condition                | `find()`, `indexOf()` |
+| Finding and returning a list of elements that meet a condition | `filter()`            |
+| ** Modifying each element and returning the modified array     | `map()`               |
+| Creating a summary or aggregation of values in an array        | `reduce()`            |
+
+In the previous lesson, we learned about `filter()`, a built-in array method
 that searches through a collection, passes each element to a provided callback
 function, and returns an entirely new array comprised of elements for which the
 callback returned a truthy value.
 
-Another very common built-in array method is `.map()`, which transforms every
+Another very common built-in array method is `map()`, which transforms every
 element in an array to another value. For example, it can be used to square
 every value in an array of numbers: `[1, 2, 3]` -> `[1, 4, 9]`. Like
-`.filter()`, `.map()` accepts a callback function, and passes each element
-in turn to the callback:
+`forEach()`, `find()` and `filter()`, `map()` accepts a callback function, and
+passes each element in turn to the callback:
 
 ```js
 [1, 2, 3].map(function (num) {
@@ -25,16 +33,16 @@ in turn to the callback:
 // => [1, 4, 9]
 ```
 
-While both `.filter()` and `.map()` return a new array, `.filter()` returns a
+While both `filter()` and `map()` return a new array, `filter()` returns a
 subset of the original array (unless all elements meet the provided condition)
-in which the elements are unchanged. `.map()`, on the other hand, returns a new
+in which the elements are unchanged. `map()`, on the other hand, returns a new
 array that's the same length as the original array in which the elements have
 been modified.
 
-Let's quickly run through how we could create our own version of the `.map()`
+Let's quickly run through how we could create our own version of the `map()`
 method.
 
-## Implementing `.map()` From Scratch
+## Implementing `map()` From Scratch
 
 ### Abstracting the iteration
 
@@ -158,90 +166,27 @@ squaredNumbers;
 // => [1, 4, 9, 16, 25]
 ```
 
-## Demonstrate Using `map()` on Flatbook's Expanding Engineering Team
+## Using `Array.prototype.map()` Instead
 
-Now let's try using our version of the `map()` function on a trickier data
-structure — a list of recently onboarded engineers. First off, we need to flip
-each new engineer's account from a normal user to an admin:
+Now let's see what it looks like if we use the built-in `map()` method:
 
 ```js
-const oldAccounts = [
-  { userID: 15, title: "Developer Apprentice", accessLevel: "user" },
-  { userID: 63, title: "Developer Apprentice", accessLevel: "user" },
-  { userID: 97, title: "Developer Apprentice", accessLevel: "user" },
-  { userID: 12, title: "Developer Apprentice", accessLevel: "user" },
-  { userID: 44, title: "Developer Apprentice", accessLevel: "user" },
-];
+const originalNumbers = [1, 2, 3, 4, 5];
 
-const newEngineers = map(oldAccounts, function (account) {
-  return Object.assign({}, account, { accessLevel: "admin" });
+const squaredNumbers = originalNumbers.map(function (num) {
+  return num * num;
 });
 
-oldAccounts;
-// => [
-//      { userID: 15, title: "Developer Apprentice", accessLevel: "user" },
-//      { userID: 63, title: "Developer Apprentice", accessLevel: "user" },
-//      { userID: 97, title: "Developer Apprentice", accessLevel: "user" },
-//      { userID: 12, title: "Developer Apprentice", accessLevel: "user" },
-//      { userID: 44, title: "Developer Apprentice", accessLevel: "user" }
-//    ]
+originalNumbers;
+// => [1, 2, 3, 4, 5]
 
-newEngineers;
-// => [
-//      { userID: 15, title: "Developer Apprentice", accessLevel: "admin" },
-//      { userID: 63, title: "Developer Apprentice", accessLevel: "admin" },
-//      { userID: 97, title: "Developer Apprentice", accessLevel: "admin" },
-//      { userID: 12, title: "Developer Apprentice", accessLevel: "admin" },
-//      { userID: 44, title: "Developer Apprentice", accessLevel: "admin" }
-//    ]
+squaredNumbers;
+// => [1, 4, 9, 16, 25]
 ```
 
-As before, we are calling our version of the `map()` function and passing in the
-collection and a callback. Notice that we're using `Object.assign()` to create a
-**new** object with updated values instead of mutating the original object's
-`accessLevel` property. Nondestructive updating is an important concept to
-practice — destructively modifying objects at multiple points within a code base
-is one of the biggest sources of bugs.
-
-Next, we just need a simple array of the new engineers' `userID`s that we can
-shoot over to the system administrator:
-
-```js
-const userIDs = map(newEngineers, function (eng) {
-  return eng.userID;
-});
-
-userIDs;
-// => [15, 63, 97, 12, 44]
-```
-
-Finally, we'll update our engineer objects to indicate that all the new
-engineers have been provided a new work laptop. This time, though, let's use
-JavaScript's built-in `Array.prototype.map()` method:
-
-```js
-const equippedEngineers = newEngineers.map(function (eng) {
-  return Object.assign({}, eng, { equipment: "Laptop" });
-});
-
-equippedEngineers;
-// => [
-//      { userID: 15, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" },
-//      { userID: 63, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" },
-//      { userID: 97, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" },
-//      { userID: 12, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" },
-//      { userID: 44, title: "Developer Apprentice", accessLevel: "admin", equipment: "Laptop" }
-//    ]
-```
-
-Note how similar this method call is to the one using our version of `map()`:
-the only difference is that we call the built-in `.map()` method _on_ our array,
-rather than passing the array as an argument. There _is_ one big difference
-between the two, though: we didn't have to do all the work of building
-`Array.prototype.map()`!
-
-Now that we understand how the built-in `.map()` array method is implemented, we
-can stick to the native method and get rid of our copycat `map()` function.
+That's it! This code works exactly the same as our version - the only difference
+is we called the method on our array rather than passing the array as an
+argument. And, of course, we didn't have to code `map()` ourselves!
 
 ## Resources
 
